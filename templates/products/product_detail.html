@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.title }}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/product_detail.css' %}">
+</head>
+
+<body>
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% for image in product.images.all %}
+    <img src="{{ image.image.url }}" alt="Unable to load" height="200px">
+    {% endfor %}
+    <h1>{{ product.title }}</h1>
+    <strong>Price: {{ product.price }}</strong>
+    <p>{{ product.description }}</p>
+    <button id="payment_btn">Buy Now</button>
+    <a href="{% url 'cart:add' product.slug %}">Add to Cart</a>
+
+
+    <!-- Razorpay Configuration -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        document.getElementById("payment_btn").onclick = function () {
+            fetch('{% url "products:purchase" product.slug %}')
+                .then((res) => res.json())
+                .then((data) => {
+                    var options = {
+                        key: data["key_id"],
+                        amount: data["amount"],
+                        currency: "INR",
+                        name: "Online Shop",
+                        description: "For practice purpose",
+                        image: "{{ product.images.first.image.url }}",
+                        order_id: data["order_id"],
+                        callback_url: "{% url 'products:purchase' product.slug %}",
+                        theme: {
+                            color: "#3399cc",
+                        },
+                    };
+                    var rzp1 = new Razorpay(options);
+                    rzp1.open();
+                })
+        }
+    </script>
+</body>
+
+</html>

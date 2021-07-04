@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders</title>
+</head>
+<body>
+    <ul>
+        {% for order in orders %}
+        <li>{{ order.date_created }}</li>
+            <ol>
+                {% for product in order.product.all %}
+                <li>{{ product.title }}</li>
+                {% endfor %}
+            </ol>
+        {% endfor %}
+    </ul>
+    {% include "snippets/pagination.html" with page=page_obj %}
+</body>
+</html>
