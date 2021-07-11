@@ -160,8 +160,8 @@ MEDIA_ROOT = 'media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-RAZORPAY_KEY_ID = 'rzp_test_g2sFJfCanp0vnm'
-RAZORPAY_KEY_SECRET = 'qLvCCtRGfDvqox4bGv2t5NZF'
+RAZORPAY_KEY_ID = 'your-key-id-here'
+RAZORPAY_KEY_SECRET = 'your-secret-key-here'
 
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
